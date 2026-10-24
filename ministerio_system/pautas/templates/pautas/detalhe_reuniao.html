@@ -1,0 +1,29 @@
+{% extends 'pautas/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow mb-4">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">{{ reuniao.titulo }}</h3>
+            <span class="badge bg-info">{{ reuniao.get_status_display }}</span>
+        </div>
+        <div class="card-body">
+            <p><strong>Data/Hora:</strong> {{ reuniao.data_hora|date:"d/m/Y H:i" }}</p>
+            <p><strong>Local:</strong> {{ reuniao.local }}</p>
+            <p><strong>Descrição:</strong> {{ reuniao.descricao|default:"Sem descrição." }}</p>
+            
+            <hr>
+            
+            <!-- Ações e Botões de Navegação -->
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="{% url 'pautas:modo_reuniao' reuniao.pk %}" class="btn btn-primary"> Modo Reunião</a>
+                <a href="{% url 'pautas:gerar_ata' reuniao.pk %}" class="btn btn-dark"> Ver Ata Oficial</a>
+                
+                {% if reuniao.status != 'CONCLUIDA' %}
+                    <a href="{% url 'pautas:concluir_reuniao' reuniao.pk %}" class="btn btn-outline-success" onclick="return confirm('Confirmar conclusão da reunião?');"> Concluir Reunião</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: sistema-reunioes-igreja
+    env: python
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate"
+    startCommand: "gunicorn ministerio_system.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0

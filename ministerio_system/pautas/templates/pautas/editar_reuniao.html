@@ -1,0 +1,13 @@
+{% extends 'pautas/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Editar Reunião</h2>
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Salvar Alterações</button>
+        <a href="{% url 'pautas:listar_reunioes' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

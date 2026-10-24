@@ -1,0 +1,71 @@
+{% extends 'pautas/base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"> Modo Reunião: {{ reuniao.titulo }}</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Informações Gerais da Reunião -->
+                <div class="mb-3">
+                    <label class="form-label font-weight-bold">Presidida por:</label>
+                    <input type="text" name="presidida_por" class="form-control" value="{{ reuniao.presidida_por|default:'' }}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Anotações do Momento Devocional / Abertura:</label>
+                    <textarea name="devocional_anotacoes" class="form-control" rows="3">{{ reuniao.devocional_anotacoes|default:'' }}</textarea>
+                </div>
+
+                <hr class="my-4">
+
+                <h4 class="mb-3">Deliberações das Pautas</h4>
+                {% for pauta in pautas %}
+                    <div class="card mb-3 border-secondary">
+                        <div class="card-header bg-light">
+                            <strong>{{ forloop.counter }}. {{ pauta.titulo }}</strong> <small class="text-muted">({{ pauta.departamento }})</small>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-2"><strong>Descrição:</strong> {{ pauta.descricao }}</p>
+                            
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <label class="form-label">Situação:</label>
+                                    <select name="situacao_{{ pauta.pk }}" class="form-select">
+                                        <option value="PENDENTE" {% if pauta.situacao == 'PENDENTE' %}selected{% endif %}>Pendente</option>
+                                        <option value="APROVADA" {% if pauta.situacao == 'APROVADA' %}selected{% endif %}>Aprovada</option>
+                                        <option value="REPROVADA" {% if pauta.situacao == 'REPROVADA' %}selected{% endif %}>Reprovada</option>
+                                        <option value="ADIADA" {% if pauta.situacao == 'ADIADA' %}selected{% endif %}>Adiada</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8 mb-2">
+                                    <label class="form-label">Resolução / Deliberação:</label>
+                                    <input type="text" name="resolucao_{{ pauta.pk }}" class="form-control" value="{{ pauta.resolucao|default:'' }}" placeholder="Digite a decisão tomada sobre esta pauta...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">Não existem pautas associadas a esta reunião.</p>
+                {% endfor %}
+
+                <hr class="my-4">
+
+                <div class="mb-4">
+                    <label class="form-label">Observações Finais / Encerramento:</label>
+                    <textarea name="observacoes_finais" class="form-control" rows="3">{{ reuniao.observacoes_finais|default:'' }}</textarea>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'pautas:detalhe_reuniao' reuniao.pk %}" class="btn btn-secondary">Voltar</a>
+                    <button type="submit" class="btn btn-success btn-lg">💾 Guardar Alterações da Reunião</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
