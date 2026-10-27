@@ -73,7 +73,7 @@ class UserRegisterForm(UserCreationForm): # type:ignore
     password = forms.CharField(widget=forms.PasswordInput, label="Senha")
     confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirmar senha")
 
-    class Meta(UserCreationForm.Meta):
+    class Meta: # type: ignore
         model = User # type:ignore
         fields = ['username', 'email'] # type:ignore  # noqa: RUF012
 
