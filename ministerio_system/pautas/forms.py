@@ -2,7 +2,6 @@ from typing import Any, ClassVar
 
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import AbstractBaseUser
 
 from .models import Pauta, Reuniao
@@ -68,7 +67,9 @@ class ReuniaoForm(forms.ModelForm): # type: ignore
                        "size": "6"}
             )
         }
-class UserRegisterForm(UserCreationForm): # type:ignore
+
+
+class UserRegisterForm(forms.ModelForm): # type:ignore
     email = forms.EmailField(required=True, label="Endereço de e-mail")
     password = forms.CharField(widget=forms.PasswordInput, label="Senha")
     confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirmar senha")
@@ -88,6 +89,7 @@ class UserRegisterForm(UserCreationForm): # type:ignore
 
     def save(self, commit: bool = True) -> AbstractBaseUser: # type:ignore
         user = super().save(commit=False) # type: ignore
+        user.set_password(self.cleaned_data["password"])
         if isinstance(user, AbstractBaseUser):
             if commit:
                 user.save()
