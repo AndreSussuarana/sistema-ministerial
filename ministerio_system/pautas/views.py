@@ -154,7 +154,7 @@ def detalhe_pauta(request: HttpRequest, pk: int) -> HttpResponse:
     pauta = get_object_or_404(Pauta, pk=pk)
     return render(request, 'pautas/detalhe_pauta.html', {'pauta': pauta})
 
-@login_required
+
 def register(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
