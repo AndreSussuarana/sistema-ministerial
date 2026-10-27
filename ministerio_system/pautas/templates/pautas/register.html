@@ -1,0 +1,14 @@
+{% extends 'pautas/base.html' %} {# Ou o nome do teu template base #}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Criar Conta</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>
+    <hr>
+    <p>Já tem uma conta? <a href="{% url 'login' %}">Fazer Login</a></p>
+</div>
+{% endblock %}

@@ -12,9 +12,14 @@
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-primary w-100 mt-3">Entrar</button>
             </form>
-        </div>
-        <div class="text-center mt-3">
-            <a href="{% url 'pautas:password_reset' %}" class="text-decoration-none">Esqueci a minha senha</a>
+            
+            <div class="text-center mt-3">
+                <a href="{% url 'password_reset' %}" class="text-decoration-none">Esqueci a minha senha</a>
+            </div>
+            
+            <div class="text-center mt-2">
+                <p class="mb-0">Ainda não tens conta? <a href="{% url 'register' %}">Faça seu cadastro</a></p>
+            </div>
         </div>
     </div>
 </div>

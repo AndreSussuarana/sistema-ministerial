@@ -1,12 +1,11 @@
 from typing import Any, ClassVar
 
 from django import forms
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import AbstractBaseUser
-from .models import Pauta, Reuniao
 
+from .models import Pauta, Reuniao
 
 User = get_user_model()
 class PautaForm(forms.ModelForm): # type:ignore
@@ -76,7 +75,7 @@ class UserRegisterForm(UserCreationForm): # type:ignore
 
     class Meta(UserCreationForm.Meta):
         model = User # type:ignore
-        fields = ['username', 'email'] # type:ignore
+        fields = ['username', 'email'] # type:ignore  # noqa: RUF012
 
     def clean(self):
         cleaned_data = super().clean()
@@ -88,7 +87,7 @@ class UserRegisterForm(UserCreationForm): # type:ignore
         return cleaned_data
 
     def save(self, commit: bool = True) -> AbstractBaseUser: # type:ignore
-        user = super().save(commit=False)
+        user = super().save(commit=False) # type: ignore
         if isinstance(user, AbstractBaseUser):
             if commit:
                 user.save()
