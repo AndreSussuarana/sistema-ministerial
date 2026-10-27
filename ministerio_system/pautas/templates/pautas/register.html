@@ -1,1 +1,22 @@
-<h1>ESTA É A PÁGINA DE CADASTRO</h1>
+{% extends 'pautas/base.html' %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 450px;">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white text-center">
+            <h4 class="mb-0">Criar Nova Conta</h4>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success w-100 mt-3">Cadastrar</button>
+            </form>
+            
+            <div class="text-center mt-3">
+                <p class="mb-0">Já tens conta? <a href="{% url 'login' %}">Entrar aqui</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
