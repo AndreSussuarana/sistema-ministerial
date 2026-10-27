@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import PautaForm, ReuniaoForm
+from .forms import PautaForm, ReuniaoForm, UserRegisterForm
 from .models import Pauta, PerfilUsuario, Reuniao
 
 
@@ -154,3 +154,15 @@ def detalhe_pauta(request: HttpRequest, pk: int) -> HttpResponse:
     pauta = get_object_or_404(Pauta, pk=pk)
     return render(request, 'pautas/detalhe_pauta.html', {'pauta': pauta})
 
+@login_required
+def register(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Conta criada com sucesso para {username}! Já podes fazer login.')
+            return redirect('login')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'pautas/register.html', {'form': form})
