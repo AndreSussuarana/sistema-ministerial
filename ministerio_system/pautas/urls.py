@@ -1,5 +1,5 @@
-from django.contrib.auth import views as auth_views
-from django.urls import path, reverse_lazy
+
+from django.urls import path
 
 from . import views
 
@@ -20,10 +20,4 @@ urlpatterns = [ # type:ignore
     path('reunioes/<int:pk>/modo-reuniao/', views.modo_reuniao, name='modo_reuniao'),
     path('reunioes/<int:pk>/ata/', views.gerar_ata, name='gerar_ata'),
     path('reunioes/<int:pk>/concluir/', views.concluir_reuniao, name='concluir_reuniao'),
-
-    # Rotas de Recuperação de Palavra-passe
-    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='pautas/password_reset.html', success_url=reverse_lazy('pautas:password_reset_done')), name='password_reset'),
-    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='pautas/password_reset_done.html'), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='pautas/password_reset_confirm.html', success_url=reverse_lazy('pautas:password_reset_complete')), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='pautas/password_reset_complete.html'), name='password_reset_complete'),
 ]
