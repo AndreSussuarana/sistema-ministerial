@@ -166,3 +166,17 @@ def register(request: HttpRequest) -> HttpResponse:
     else:
         form = UserRegisterForm()
     return render(request, 'pautas/register.html', {'form': form})
+
+@login_required
+def dashboard(request: HttpRequest) -> HttpResponse:
+    """Painel inicial que destaca a próxima reunião e atalhos rápidos."""
+    proxima_reuniao = Reuniao.objects.exclude(status='CONCLUIDA').order_by('data_hora').first()
+
+    perfil = PerfilUsuario.objects.filter(user=request.user).first()
+    is_secretaria_or_admin = request.user.is_superuser or (perfil and perfil.is_secretaria())
+
+    context = { # type: ignore
+        'proxima_reuniao': proxima_reuniao,
+        'is_secretaria_or_admin': is_secretaria_or_admin
+    }
+    return render(request, 'pautas/dashboard.html', context) # type: ignore

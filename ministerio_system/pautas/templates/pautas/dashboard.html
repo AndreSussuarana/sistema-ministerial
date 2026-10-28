@@ -1,0 +1,89 @@
+{% extends 'pautas/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2>Painel Inicial</h2>
+            <p class="text-muted">Bem-vindo(a) ao sistema de gestão de reuniões da comissão.</p>
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-primary mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Próxima Reunião em Destaque</h5>
+                    {% if proxima_reuniao %}
+                        <span class="badge bg-light text-dark">{{ proxima_reuniao.status }}</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if proxima_reuniao %}
+                        <h3 class="card-title text-primary">{{ proxima_reuniao.titulo }}</h3>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <strong>Data e Hora:</strong> {{ proxima_reuniao.data_hora|date:"d/m/Y H:i" }}
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Local:</strong> {{ proxima_reuniao.local }}
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Prazo Limite para Pautas:</strong> 
+                                <span class="text-danger">{{ proxima_reuniao.prazo_limite_pautas|date:"d/m/Y H:i"|default:"Não definido" }}</span>
+                            </div>
+                        </div>
+                        
+                        <p class="mt-3 text-muted">{{ proxima_reuniao.descricao }}</p>
+
+                        <div class="mt-4 d-flex gap-2">
+                            <!-- Botão para Líderes enviarem pauta -->
+                            <a href="{% url 'pautas:criar_pauta' %}" class="btn btn-success">
+                                <i class="bi bi-plus-circle"></i> Enviar Pauta para esta Reunião
+                            </a>
+
+                            {% if is_secretaria_or_admin %}
+                                <!-- Atalho exclusivo para a Secretária gerir o modo reunião -->
+                                <a href="{% url 'pautas:modo_reuniao' proxima_reuniao.pk %}" class="btn btn-outline-primary">
+                                    <i class="bi bi-gear"></i> Entrar no Modo Reunião
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <p class="text-muted mb-3">De momento, não existe nenhuma reunião agendada.</p>
+                            {% if is_secretaria_or_admin %}
+                                <a href="{% url 'pautas:criar_reuniao' %}" class="btn btn-primary">Cadastrar Nova Reunião</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Minhas Pautas</h5>
+                    <p class="card-text text-muted">Consulte, edite ou acompanhe o estado das pautas que submeteu para as comissões.</p>
+                    <a href="{% url 'pautas:listar_pautas' %}" class="btn btn-outline-secondary btn-sm">Ver Pautas</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Histórico de Reuniões</h5>
+                    <p class="card-text text-muted">Consulte reuniões anteriores, atas finalizadas e resoluções aprovadas.</p>
+                    <a href="{% url 'pautas:listar_reunioes' %}" class="btn btn-outline-secondary btn-sm">Ver Reuniões</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

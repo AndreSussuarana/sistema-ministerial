@@ -6,7 +6,8 @@ from . import views
 app_name = 'pautas'
 
 urlpatterns = [ # type:ignore
-    path('', views.listar_pautas, name='listar_pautas'),
+    path('', views.dashboard, name='dashboard'),
+    path('pautas', views.listar_pautas, name='listar_pautas'),
     path('nova/', views.criar_pauta, name='criar_pauta'),
     path('<int:pk>/', views.detalhe_pauta, name='detalhe_pauta'), # type:ignore
     path('<int:pk>/editar/', views.editar_pauta, name='editar_pauta'),
