@@ -1,6 +1,7 @@
 from typing import cast
 
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -131,7 +132,7 @@ def gerar_ata(request: HttpRequest, pk: int) -> HttpResponse:
         'presencas': presencas
     })
 
-@login_required
+@staff_member_required
 def concluir_reuniao(request: HttpRequest, pk: int):
     reuniao = get_object_or_404(Reuniao, pk=pk)
     

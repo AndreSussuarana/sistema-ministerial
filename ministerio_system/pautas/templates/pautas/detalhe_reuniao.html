@@ -15,12 +15,16 @@
             <hr>
             
             <!-- Ações e Botões de Navegação -->
-            <div class="d-flex gap-2 flex-wrap">
+            <div class="d-flex gap-2 flex-wrap align-items-center">
                 <a href="{% url 'pautas:modo_reuniao' reuniao.pk %}" class="btn btn-primary"> Modo Reunião</a>
                 <a href="{% url 'pautas:gerar_ata' reuniao.pk %}" class="btn btn-dark"> Ver Ata Oficial</a>
                 
                 {% if reuniao.status != 'CONCLUIDA' %}
-                    <a href="{% url 'pautas:concluir_reuniao' reuniao.pk %}" class="btn btn-outline-success" onclick="return confirm('Confirmar conclusão da reunião?');"> Concluir Reunião</a>
+                    <!-- Alterado para form POST para bater certo com a View -->
+                    <form method="post" action="{% url 'pautas:concluir_reuniao' reuniao.pk %}" class="d-inline" onsubmit="return confirm('Confirmar conclusão da reunião?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success">Concluir Reunião</button>
+                    </form>
                 {% endif %}
             </div>
         </div>
