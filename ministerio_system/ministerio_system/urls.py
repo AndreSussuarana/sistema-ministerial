@@ -31,4 +31,6 @@ urlpatterns = [ # type:ignore
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
         template_name='pautas/password_reset_complete.html'
     ), name='password_reset_complete'),
+
+    
 ]

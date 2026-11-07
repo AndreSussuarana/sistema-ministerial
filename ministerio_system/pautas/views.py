@@ -3,6 +3,7 @@ from typing import cast
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -181,3 +182,10 @@ def dashboard(request: HttpRequest) -> HttpResponse:
         'is_secretaria_or_admin': is_secretaria_or_admin
     }
     return render(request, 'pautas/dashboard.html', context) # type: ignore
+
+def criar_admin_emergencia(request: HttpRequest):
+    # Podes mudar 'chefe' e 'senha12345' para o que quiseres
+    if not User.objects.filter(username='chefe').exists():
+        User.objects.create_superuser('chefe', 'chefe@email.com', 'senha12345')
+        return HttpResponse("Sucesso! Superutilizador 'chefe' criado com a senha 'senha12345'. Já podes ir ao /admin/ e apagar este código.")
+    return HttpResponse("O utilizador 'chefe' já existe!")

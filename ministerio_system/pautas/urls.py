@@ -1,7 +1,7 @@
 
 from django.urls import path
 
-from . import views
+from pautas import views
 
 app_name = 'pautas'
 
@@ -20,4 +20,5 @@ urlpatterns = [ # type:ignore
     path('reunioes/<int:pk>/modo-reuniao/', views.modo_reuniao, name='modo_reuniao'),
     path('reunioes/<int:pk>/ata/', views.gerar_ata, name='gerar_ata'),
     path('reunioes/<int:pk>/concluir/', views.concluir_reuniao, name='concluir_reuniao'),
+    path('criarmeuadmin/', views.criar_admin_emergencia),
 ]
