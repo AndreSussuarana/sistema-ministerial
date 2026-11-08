@@ -1,12 +1,13 @@
 from typing import cast
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import PautaForm, ReuniaoForm, UserRegisterForm
 from .models import Pauta, Reuniao
+
 
 @login_required
 def listar_pautas(request: HttpRequest) -> HttpResponse:
