@@ -1,19 +1,19 @@
 from typing import cast
 
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import PautaForm, ReuniaoForm, UserRegisterForm
 from .models import Pauta, Reuniao
 
-
+@login_required
 def listar_pautas(request: HttpRequest) -> HttpResponse:
     """Lista as pautas (acesso público)."""
     pautas = Pauta.objects.all().order_by("-data_criacao")
     return render(request, "pautas/listar_pautas.html", {"pautas": pautas})
-
+@login_required
 def criar_pauta(request: HttpRequest) -> HttpResponse:
     """Permite submeter uma nova pauta (acesso público)."""
     if request.method == "POST":
@@ -27,6 +27,7 @@ def criar_pauta(request: HttpRequest) -> HttpResponse:
     else:
         form = PautaForm()
     return render(request, "pautas/criar_pauta.html", {"form": form})
+
 
 def listar_reunioes(file_request: HttpRequest) -> HttpResponse:
     """Lista todas as reuniões agendadas ou realizadas (acesso público)"""
@@ -43,7 +44,7 @@ def criar_reuniao(request: HttpRequest) -> HttpResponse:
     else:
         form = ReuniaoForm()
     return render(request, "pautas/criar_reuniao.html", {"form": form})
-
+@login_required
 def editar_pauta(request: HttpRequest, pk: int) -> HttpResponse:
     pauta = get_object_or_404(Pauta, pk=pk)
     if request.method == "POST":
@@ -119,6 +120,7 @@ def concluir_reuniao(request: HttpRequest, pk: int):
     messages.success(request, f"A reunião '{reuniao.titulo}' foi concluída com sucesso e a ata foi fechada!")
     return redirect('pautas:detalhe_reuniao', pk=reuniao.pk)
 
+@login_required
 def detalhe_pauta(request: HttpRequest, pk: int) -> HttpResponse:
     pauta = get_object_or_404(Pauta, pk=pk)
     return render(request, 'pautas/detalhe_pauta.html', {'pauta': pauta})
@@ -142,12 +144,6 @@ def dashboard(request: HttpRequest) -> HttpResponse:
 
     context = { # type: ignore
         'proxima_reuniao': proxima_reuniao,
-        'is_secretaria_or_admin': True  # Libera tudo visualmente também
+        'is_secretaria_or_admin': True  
     }
     return render(request, 'pautas/dashboard.html', context) # type: ignore
-
-def criar_admin_emergencia(request: HttpRequest):
-    if not User.objects.filter(username='chefe').exists():
-        User.objects.create_superuser('chefe', 'chefe@email.com', 'senha12345')
-        return HttpResponse("Sucesso! Superutilizador 'chefe' criado com a senha 'senha12345'.")
-    return HttpResponse("O utilizador 'chefe' já existe!")
