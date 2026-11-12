@@ -58,7 +58,7 @@ class ReuniaoForm(forms.ModelForm): # type: ignore
                        "rows": 5,
                        "placeholder": "Notas gerais da futura reunião"}
             ),
-            "prazo_limites_pautas": forms.DateTimeInput(
+            "prazo_limite_pautas": forms.DateTimeInput(
                 attrs={"class": "form-control",
                        "type": "datetime-local"}
             ),
