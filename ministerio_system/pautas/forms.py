@@ -11,7 +11,7 @@ class PautaForm(forms.ModelForm): # type:ignore
 
     class Meta: 
         model = Pauta
-        fields = ("titulo", "descricao", "departamento", "anexo")
+        fields = ("titulo", "descricao", "departamento")
         widgets: ClassVar[dict[str, Any]] = { 
             "titulo": forms.TextInput(
                 attrs={
@@ -34,7 +34,7 @@ class PautaForm(forms.ModelForm): # type:ignore
                     "placeholder": "Ex: Ministério da Música",
                 }
             ),
-            "anexo": forms.FileInput(attrs={"class": "form-control"}),
+
         }
 class ReuniaoForm(forms.ModelForm): # type: ignore
     class Meta:

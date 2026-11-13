@@ -53,7 +53,7 @@ class Pauta(models.Model):
     status = models.CharField(
         max_length=20, choices=StatusPauta.choices, default=StatusPauta.PENDENTE
     )
-    anexo = models.FileField(upload_to="pautas_anexos/", blank=True, null=True)
+    
     resolucao = models.TextField(blank=True, null=True, verbose_name="Texto da Deliberação")
     situacao = models.CharField(max_length=20, choices=StatusPauta.choices, default=StatusPauta.PENDENTE)
     
